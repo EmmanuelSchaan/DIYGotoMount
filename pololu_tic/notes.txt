@@ -1,0 +1,8 @@
+Once the tic is connected to the raspberry pi, type:
+ticcmd --list
+to check that it is recognized
+
+Then type:
+ticgui
+to start the gui and control the stepper motor!
+
