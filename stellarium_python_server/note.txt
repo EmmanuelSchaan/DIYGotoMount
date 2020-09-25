@@ -1,0 +1,15 @@
+
+to use:
+- connect to the "telescope" from the stellarium gui, using the telescope plugin
+- then run python telescope_server.py
+
+What made it work:
+- in stellarium, choose port 10001, and use the correct name for the local host, which for my mac was not "localhost"! It turned out to be "fuji.attlocal.net". You can get the correct name by running the following in ipython:
+import socket
+socket.gethostname()
+- in stellarium, you can ask for this telescope to connect automatically at start up. Do it on the raspberry pi!
+- the code shows that the ra and dec sent by stellarium are properly received by the python server. 
+
+To do:
+- check how to send the telescope position back to stellarium.
+- can I send/receive more info, eg lon, lat, time? This is not technically needed for the calibration of angles, but could be useful to use a gps on the raspberry pi and use it to set coordinates and time in stellarium automatically.

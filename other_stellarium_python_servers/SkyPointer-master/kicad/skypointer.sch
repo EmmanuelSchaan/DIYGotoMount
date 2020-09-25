@@ -1,0 +1,212 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:tcsc1230
+LIBS:skypointer-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L R R1
+U 1 1 569B9158
+P 4375 3475
+F 0 "R1" V 4455 3475 50  0000 C CNN
+F 1 "470" V 4375 3475 50  0000 C CNN
+F 2 "Resistors_SMD:R_1206_HandSoldering" V 4305 3475 50  0001 C CNN
+F 3 "" H 4375 3475 50  0000 C CNN
+	1    4375 3475
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR01
+U 1 1 569B920F
+P 5175 4025
+F 0 "#PWR01" H 5175 3775 50  0001 C CNN
+F 1 "GND" H 5175 3875 50  0000 C CNN
+F 2 "" H 5175 4025 50  0000 C CNN
+F 3 "" H 5175 4025 50  0000 C CNN
+	1    5175 4025
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R2
+U 1 1 569B9227
+P 5200 3475
+F 0 "R2" V 5280 3475 50  0000 C CNN
+F 1 "10k" V 5200 3475 50  0000 C CNN
+F 2 "Resistors_SMD:R_1206_HandSoldering" V 5130 3475 50  0001 C CNN
+F 3 "" H 5200 3475 50  0000 C CNN
+	1    5200 3475
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR02
+U 1 1 569B929B
+P 5200 3325
+F 0 "#PWR02" H 5200 3175 50  0001 C CNN
+F 1 "+5V" H 5200 3465 50  0000 C CNN
+F 2 "" H 5200 3325 50  0000 C CNN
+F 3 "" H 5200 3325 50  0000 C CNN
+	1    5200 3325
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5050 3725 5375 3725
+Wire Wire Line
+	5200 3725 5200 3625
+Wire Wire Line
+	4450 3725 4375 3725
+Wire Wire Line
+	4375 3725 4375 3625
+$Comp
+L +5V #PWR03
+U 1 1 569B92E1
+P 4375 3325
+F 0 "#PWR03" H 4375 3175 50  0001 C CNN
+F 1 "+5V" H 4375 3465 50  0000 C CNN
+F 2 "" H 4375 3325 50  0000 C CNN
+F 3 "" H 4375 3325 50  0000 C CNN
+	1    4375 3325
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5050 3925 5175 3925
+Wire Wire Line
+	5175 3925 5175 4025
+$Comp
+L GND #PWR04
+U 1 1 569B91F7
+P 4375 4050
+F 0 "#PWR04" H 4375 3800 50  0001 C CNN
+F 1 "GND" H 4375 3900 50  0000 C CNN
+F 2 "" H 4375 4050 50  0000 C CNN
+F 3 "" H 4375 4050 50  0000 C CNN
+	1    4375 4050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4450 3925 4375 3925
+Wire Wire Line
+	4375 3925 4375 4050
+$Comp
+L CONN_01X04 P1
+U 1 1 569B97D6
+P 4550 2650
+F 0 "P1" H 4550 2925 50  0000 C CNN
+F 1 "CONN_01X04" V 4650 2650 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x04" H 4550 2650 50  0001 C CNN
+F 3 "" H 4550 2650 50  0000 C CNN
+	1    4550 2650
+	-1   0    0    -1  
+$EndComp
+$Comp
+L CONN_01X02 P3
+U 1 1 569B99CE
+P 5800 2850
+F 0 "P3" H 5800 3000 50  0000 C CNN
+F 1 "Laser" V 5900 2850 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x02" H 5800 2850 50  0001 C CNN
+F 3 "" H 5800 2850 50  0000 C CNN
+	1    5800 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR05
+U 1 1 569BA113
+P 4850 2850
+F 0 "#PWR05" H 4850 2600 50  0001 C CNN
+F 1 "GND" H 4850 2700 50  0000 C CNN
+F 2 "" H 4850 2850 50  0000 C CNN
+F 3 "" H 4850 2850 50  0000 C CNN
+	1    4850 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR06
+U 1 1 569BA149
+P 4850 2400
+F 0 "#PWR06" H 4850 2250 50  0001 C CNN
+F 1 "+5V" H 4850 2540 50  0000 C CNN
+F 2 "" H 4850 2400 50  0000 C CNN
+F 3 "" H 4850 2400 50  0000 C CNN
+	1    4850 2400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5375 3725 5375 2600
+Connection ~ 5200 3725
+$Comp
+L TCST1230 U1
+U 1 1 569C0DD6
+P 4750 3825
+F 0 "U1" H 4540 4015 50  0000 L CNN
+F 1 "TCST1230" H 4750 4025 50  0000 L CNN
+F 2 "TCST1230" H 4550 3625 50  0001 L CIN
+F 3 "" H 4750 3825 50  0000 L CNN
+	1    4750 3825
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR07
+U 1 1 56CB7E81
+P 5600 3000
+F 0 "#PWR07" H 5600 2750 50  0001 C CNN
+F 1 "GND" H 5600 2850 50  0000 C CNN
+F 2 "" H 5600 3000 50  0000 C CNN
+F 3 "" H 5600 3000 50  0000 C CNN
+	1    5600 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4750 2800 5600 2800
+Wire Wire Line
+	5375 2600 4750 2600
+Wire Wire Line
+	4750 2700 4850 2700
+Wire Wire Line
+	4850 2700 4850 2850
+Wire Wire Line
+	5600 2900 5600 3000
+Wire Wire Line
+	4750 2500 4850 2500
+Wire Wire Line
+	4850 2500 4850 2400
+$EndSCHEMATC
