@@ -58,7 +58,7 @@ curses.endwin()
 ####################################################
 # Using pynput: works, but only when terminal is
 # the front window
-
+'''
 from pynput.keyboard import Key, Listener
 #import RPi.GPIO as GPIO
 import logging
@@ -85,4 +85,82 @@ def on_press(key):
 #collect keys on pressed in keyboard
 with Listener(on_press=on_press) as listener: 
     listener.join()
+'''
+
+####################################################
+# copied from Stack overflow, but doesn't seem to work
+# maybe only work on Windows
+
+'''
+import ctypes
+libX11    = ctypes.CDLL('libX11.so')
+XGrabKey = libX11.XGrabKey
+XGrabKeyboard = libX11.XGrabKeyboard
+print("XGrabKey: "     , dir(XGrabKey))
+print("XGrabKeyboard: ", dir(XGrabKeyboard))
+'''
+
+'''
+import pythoncom, pyHook
+
+def OnKeyboardEvent(event):
+    print('MessageName:',event.MessageName)
+    print('Message:',event.Message)
+    print('Time:',event.Time)
+    print('Window:',event.Window)
+    print('WindowName:',event.WindowName)
+    print('Ascii:', event.Ascii, chr(event.Ascii))
+    print('Key:', event.Key)
+    print('KeyID:', event.KeyID)
+    print('ScanCode:', event.ScanCode)
+    print('Extended:', event.Extended)
+    print('Injected:', event.Injected)
+    print('Alt', event.Alt)
+    print('Transition', event.Transition)
+    print('---')
+
+# return True to pass the event to other handlers
+    return True
+
+# create a hook manager
+hm = pyHook.HookManager()
+# watch for all mouse events
+hm.KeyDown = OnKeyboardEvent
+# set the hook
+hm.HookKeyboard()
+# wait forever
+pythoncom.PumpMessages()
+'''
+
+'''
+from pyHook import HookManager
+from win32gui import PumpMessages, PostQuitMessage
+
+class Keystroke_Watcher(object):
+    def __init__(self):
+        self.hm = HookManager()
+        self.hm.KeyDown = self.on_keyboard_event
+        self.hm.HookKeyboard()
+
+
+    def on_keyboard_event(self, event):
+        try:
+            if event.KeyID  == keycode_youre_looking_for:
+                self.your_method()
+        finally:
+            return True
+
+    def your_method(self):
+        pass
+
+    def shutdown(self):
+        PostQuitMessage(0)
+        self.hm.UnhookKeyboard()
+
+
+watcher = Keystroke_Watcher()
+PumpMessages()
+'''
+
+
 
