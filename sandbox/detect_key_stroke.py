@@ -89,7 +89,7 @@ with Listener(on_press=on_press) as listener:
 
 ####################################################
 # copied from Stack overflow, but doesn't seem to work
-# maybe only work on Windows
+# maybe only works on Windows
 
 '''
 import ctypes
@@ -163,4 +163,21 @@ PumpMessages()
 '''
 
 
+####################################################
+# Reading the file in /dev/input/
+# This works perfectly, even when the terminal is in the background!!!
+
+import evdev
+
+#devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
+#for device in devices:
+#   print(device.path, device.name, device.phys)
+
+
+device = evdev.InputDevice('/dev/input/event1')
+print(device)
+
+for event in device.read_loop():
+   if event.type == evdev.ecodes.EV_KEY:
+      print(evdev.categorize(event))
 
