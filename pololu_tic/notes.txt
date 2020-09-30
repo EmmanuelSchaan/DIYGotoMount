@@ -2,6 +2,9 @@ Once the tic is connected to the raspberry pi, type:
 ticcmd --list
 to check that it is recognized
 
+Type ticcmd
+to get a list of all commands
+
 Then type:
 ticgui
 to start the gui and control the stepper motor!
@@ -12,5 +15,7 @@ max speed: 40k steps/sec
 max acceleration: 40k steps/sec^2
 a 180 turn of the camera mount took about 18 sec, looked good visually.
 
-When going back and forth at high speed, it is possible that some steps were lost: the mount seemed not to go back exactly where it started. This may require an encoder to fix...
+When going back and forth at high speed, it is possible that some steps were lost: the mount seemed not to go back exactly where it started. 
+This may be due to my abruptly halting the motor.
+This may require an encoder to fix.
 This may also be fixed with a slower acceleration.

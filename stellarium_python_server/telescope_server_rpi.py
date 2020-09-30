@@ -121,7 +121,7 @@ class Telescope_Channel(QtCore.QThread, asyncore.dispatcher):
 	def handle_write(self):
 		self.send(self.buffer.bytes)
 		self.is_writable = False
-	
+
 
 ## \brief Implementation of the server side communications for 'Stellarium Telescope Protocol'.
 #
