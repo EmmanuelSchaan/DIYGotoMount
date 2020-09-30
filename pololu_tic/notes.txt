@@ -6,3 +6,11 @@ Then type:
 ticgui
 to start the gui and control the stepper motor!
 
+Latest working settings, for the geared stepper motor with 1:100 reduction
+1/16 microstepping
+max speed: 40k steps/sec
+max acceleration: 40k steps/sec^2
+a 180 turn of the camera mount took about 18 sec, looked good visually.
+
+When going back and forth at high speed, it is possible that some steps were lost: the mount seemed not to go back exactly where it started. This may require an encoder to fix...
+This may also be fixed with a slower acceleration.
