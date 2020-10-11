@@ -92,7 +92,7 @@ class Telescope_Channel(QtCore.QThread, asyncore.dispatcher):
 	def act_pos(self, ra, dec):
 		(ra_p, dec_p) = coords.rad_2_stellarium_protocol(ra, dec)
 		
-		times = 10 #Number of times that Stellarium expects to receive new coords //Absolutly empiric..
+		times = 10 #Number of times that Stellarium expects to receive new coords //Absolutely empirical..
 		for i in range(times):
 			self.move(ra_p, dec_p)
 	
