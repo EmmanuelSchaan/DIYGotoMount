@@ -4,7 +4,8 @@ import yaml
 
 # my tic device number
 tic1_id = '00315372'
-
+#tic_ra = '00315372'
+#tic_dec = '00315338'
 
 def ticcmd(*args):
    return subprocess.check_output(['ticcmd'] + list(args))
