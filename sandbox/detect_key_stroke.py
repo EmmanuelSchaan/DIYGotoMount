@@ -166,15 +166,19 @@ PumpMessages()
 ####################################################
 # Reading the file in /dev/input/
 # This works perfectly, even when the terminal is in the background!!!
+# Sometimes, the keyboard appears as several devices; in that case, 
+# not all of them will allow detection when the terinal is not active,
+# and I need to select hte correct one.
 
 import evdev
 
-#devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
-#for device in devices:
-#   print(device.path, device.name, device.phys)
+devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
+for device in devices:
+   print(device.path, device.name, device.phys)
 
 
-device = evdev.InputDevice('/dev/input/event1')
+#device = evdev.InputDevice('/dev/input/event1')
+device = evdev.InputDevice('/dev/input/event0')
 print(device)
 
 for event in device.read_loop():
