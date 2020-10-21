@@ -7,37 +7,6 @@ app = App(title="Goto Mount Controller")
 app.display()
 '''
 
-##############################################33
-# PyQt4: works
-
-import sys
-from PyQt4.QtGui import *
-
-from PyQt4.QtCore import QT_VERSION_STR
-from PyQt4.Qt import PYQT_VERSION_STR
-from sip import SIP_VERSION_STR
-
-a = QApplication(sys.argv)       
-
-w = QWidget()
-w.resize(320, 240)
-w.setWindowTitle("Goto Mount Controller") 
-
-label = QLabel()
-#info = "Qt version:" + QT_VERSION_STR + \
-#       "\nSIP version:" + SIP_VERSION_STR + \
-#       "\nPyQt version:" + PYQT_VERSION_STR
-info = "C'est parti !"
-label.setText(info)
-
-hbox = QHBoxLayout()
-hbox.addWidget(label)
-w.setLayout(hbox)
-
-w.show() 
- 
-sys.exit(a.exec_())
-
 
 
 ##############################################33
@@ -114,3 +83,121 @@ if __name__ == '__main__':
     sys.exit(app.exec_())
 '''
 
+##############################################33
+# PyQt4: works
+'''
+import sys
+from PyQt4.QtGui import *
+
+from PyQt4.QtCore import QT_VERSION_STR
+from PyQt4.Qt import PYQT_VERSION_STR
+from sip import SIP_VERSION_STR
+
+a = QApplication(sys.argv)       
+
+w = QWidget()
+w.resize(320, 240)
+w.setWindowTitle("Goto Mount Controller") 
+
+label = QLabel()
+#info = "Qt version:" + QT_VERSION_STR + \
+#       "\nSIP version:" + SIP_VERSION_STR + \
+#       "\nPyQt version:" + PYQT_VERSION_STR
+info = "C'est parti !"
+label.setText(info)
+
+hbox = QHBoxLayout()
+hbox.addWidget(label)
+w.setLayout(hbox)
+
+w.show() 
+ 
+sys.exit(a.exec_())
+'''
+
+##############################################33
+#
+
+import sys
+from PyQt4 import QtGui, QtCore
+
+class Window(QtGui.QMainWindow):
+
+   def __init__(self):
+      super(Window, self).__init__()
+      self.setGeometry(50, 50, 500, 500)
+      self.setWindowTitle("Goto Mount Controller")
+      self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
+      self.home()
+
+   def home(self):
+
+      # Quit button 
+      self.btn = QtGui.QPushButton("Quit", self)
+      self.btn.clicked.connect(QtCore.QCoreApplication.instance().quit)
+      self.btn.resize(100,100)
+      self.btn.move(300,400)
+
+      # tracking toggle button
+      self.btnTracking = QtGui.QPushButton("Tracking ON", self)
+      self.btnTracking.setCheckable(True)
+      self.btnTracking.setStyleSheet("background-color : lightgreen")
+      self.btnTracking.clicked.connect(self.toggleTracking)
+      self.btnTracking.resize(100,100)
+      self.btnTracking.move(100,400)
+
+      # RA minus
+      self.btnRaMinus = QtGui.QPushButton("RA-", self)
+      self.btnRaMinus.clicked.connect(self.decreaseRa)
+      self.btnRaMinus.resize(100,100)
+      self.btnRaMinus.move(100,100)
+
+      # RA plus
+      self.btnRaPlus = QtGui.QPushButton("RA+", self)
+      self.btnRaPlus.clicked.connect(self.increaseRa)
+      self.btnRaPlus.resize(100,100)
+      self.btnRaPlus.move(300,100)
+
+      # Dec minus
+      self.btnDecMinus = QtGui.QPushButton("Dec-", self)
+      self.btnDecMinus.clicked.connect(self.decreaseDec)
+      self.btnDecMinus.resize(100,100)
+      self.btnDecMinus.move(200,200)
+
+      # Dec plus
+      self.btnDecPlus = QtGui.QPushButton("Dec+", self)
+      self.btnDecPlus.clicked.connect(self.increaseDec)
+      self.btnDecPlus.resize(100,100)
+      self.btnDecPlus.move(200,0)
+
+      self.update()
+      self.show()
+
+   def toggleTracking(self):
+        if self.btnTracking.isChecked(): 
+            # setting background color to light-blue 
+            self.btnTracking.setStyleSheet("background-color : red") 
+            self.btnTracking.setText("Tracking OFF")
+        else: 
+            # set background color back to light-grey 
+            self.btnTracking.setStyleSheet("background-color : lightgreen")
+            self.btnTracking.setText("Tracking ON")
+
+   def increaseRa(self):
+      pass
+   
+   def decreaseRa(self):
+      pass
+
+   def increaseDec(self):
+      pass
+   
+   def decreaseDec(self):
+      pass
+        
+def run():
+   app = QtGui.QApplication(sys.argv)
+   GUI = Window()
+   sys.exit(app.exec_())
+
+run()
