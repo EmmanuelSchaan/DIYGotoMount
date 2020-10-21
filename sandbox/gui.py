@@ -170,6 +170,22 @@ class Window(QtGui.QMainWindow):
       self.btnDecPlus.resize(100,100)
       self.btnDecPlus.move(200,0)
 
+      # Stop
+      self.btnStop = QtGui.QPushButton("Stop", self)
+      self.btnStop.clicked.connect(self.stop)
+      self.btnStop.resize(100,100)
+      self.btnStop.move(200,100)
+
+      # Current RA
+      self.txtRa = QtGui.QLineEdit("RA", self)
+      self.txtRa.resize(100,40)
+      self.txtRa.move(0, 0)
+
+      # Current Dec
+      self.txtDec = QtGui.QLineEdit("Dec", self)
+      self.txtDec.resize(100,40)
+      self.txtDec.move(0, 45)
+
       self.update()
       self.show()
 
@@ -184,15 +200,28 @@ class Window(QtGui.QMainWindow):
             self.btnTracking.setText("Tracking ON")
 
    def increaseRa(self):
+      '''Set positive speed target for RA
+      '''
       pass
    
    def decreaseRa(self):
+      '''Set negative speed target for RA
+      '''
       pass
 
    def increaseDec(self):
+      '''Set positive speed target for Dec
+      '''
       pass
    
    def decreaseDec(self):
+      '''Set negative speed target for Dec
+      '''
+      pass
+
+   def stop(self):
+      '''Halts the motors, interrupt or not the tracking
+      '''
       pass
         
 def run():
