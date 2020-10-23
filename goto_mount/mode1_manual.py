@@ -1,14 +1,17 @@
-##############################################33
-#
 import numpy as np
 
 import subprocess
 import yaml
 from time import sleep
 
-
 import sys
 from PyQt4 import QtGui, QtCore
+
+
+
+##############################################33
+# GUI
+
 
 class Window(QtGui.QMainWindow):
 
@@ -24,7 +27,8 @@ class Window(QtGui.QMainWindow):
       self.motorDec = motorDec
 
       # default mode: sidereal tracking
-      self.motorRa.setTargetStepVelocity(self.motorRa.stepSpeedSiderealTracking)
+      self.motorRa.setTargetPulseSpeed(self.motorRa.pulseSpeedSiderealTracking)
+      self.motorDec.setTargetPulseSpeed(0)
 
    def home(self):
 
@@ -105,12 +109,14 @@ class Window(QtGui.QMainWindow):
             # setting background color to light-blue 
             self.btnTracking.setStyleSheet("background-color : red") 
             self.btnTracking.setText("Tracking OFF")
-            self.motorRa.setTargetStepVelocity(0)
+            self.motorRa.setTargetPulseSpeed(0)
+            self.motorDec.setTargetPulseSpeed(0)
         else: 
             # set background color back to light-grey 
             self.btnTracking.setStyleSheet("background-color : lightgreen")
             self.btnTracking.setText("Tracking ON")
-            self.motorRa.setTargetStepVelocity(self.motorRa.stepSpeedSiderealTracking)
+            self.motorRa.setTargetPulseSpeed(self.motorRa.pulseSpeedSiderealTracking)
+            self.motorDec.setTargetPulseSpeed(0)
 
 
    def slewBtnPressed(self, direction):
@@ -119,13 +125,13 @@ class Window(QtGui.QMainWindow):
       #print 'button pressed!'
       #print direction
       if direction=='raPlus':
-         self.motorRa.setTargetStepVelocity(self.motorRa.maxStepSpeed)
+         self.motorRa.setTargetPulseSpeed(self.motorRa.maxPulseSpeed)
       elif direction=='raMinus':
-         self.motorRa.setTargetStepVelocity(-self.motorRa.maxStepSpeed)
+         self.motorRa.setTargetPulseSpeed(-self.motorRa.maxPulseSpeed)
       elif direction=='decPlus':
-         self.motorDec.setTargetStepVelocity(self.motorDec.maxStepSpeed)
+         self.motorDec.setTargetPulseSpeed(self.motorDec.maxPulseSpeed)
       elif direction=='decMinus':
-         self.motorDec.setTargetStepVelocity(-self.motorDec.maxStepSpeed)
+         self.motorDec.setTargetPulseSpeed(-self.motorDec.maxPulseSpeed)
 
 
    def slewBtnReleased(self, direction):
@@ -134,13 +140,13 @@ class Window(QtGui.QMainWindow):
       #print 'button released!'
       #print direction
       if direction=='raPlus':
-         self.motorRa.setTargetStepVelocity(0)
+         self.motorRa.setTargetPulseSpeed(0)
       elif direction=='raMinus':
-         self.motorRa.setTargetStepVelocity(0)
+         self.motorRa.setTargetPulseSpeed(0)
       elif direction=='decPlus':
-         self.motorDec.setTargetStepVelocity(0)
+         self.motorDec.setTargetPulseSpeed(0)
       elif direction=='decMinus':
-         self.motorDec.setTargetStepVelocity(0)
+         self.motorDec.setTargetPulseSpeed(0)
 
 
 
@@ -149,10 +155,19 @@ class Window(QtGui.QMainWindow):
       '''
       self.motorRa.halt()
       self.motorDec.halt()
-        
+
+      if self.btnTracking.isChecked(): 
+         self.motorRa.setTargetPulseSpeed(0)
+         self.motorDec.setTargetPulseSpeed(0)
+      else:
+         # default mode: sidereal tracking
+         self.motorRa.setTargetPulseSpeed(self.motorRa.pulseSpeedSiderealTracking)
+         self.motorDec.setTargetPulseSpeed(0)
+
 
 
 ##############################################33
+# Motor control
 
 
 def ticcmd(*args):
@@ -160,8 +175,9 @@ def ticcmd(*args):
 
 class Motor(object):
 
-   def __init__(self, ticid):
+   def __init__(self, ticid, name):
       self.ticid = ticid
+      self.name = name
 
       # gearbox * pinion-wheel  reduction factor
       # gearbox: 99. + 104./2057.
@@ -171,13 +187,14 @@ class Motor(object):
 
       # settings
       self.current = 192   # [mA]
-      self.microStepping = 16 # [microsteps per step]
-      self.maxStepSpeed = 400000000 # [1.e-4 steps/sec]
-      self.maxStepAccel = 4000000   # [1.e-2 steps/sec^2]
-      self.maxStepDecel = 4000000   # [1.e-2 steps/sec^2]
+      self.microStepping = 16 # [pulses per step]
+      #self.microStepping = 32 # [pulses per step]
+      self.maxPulseSpeed = 400000000 # [1.e-4 pulses/sec]
+      self.maxPulseAccel = 4000000   # [1.e-2 pulses/sec^2]
+      self.maxPulseDecel = 4000000   # [1.e-2 pulses/sec^2]
 
-      # sidereal tracking step speed
-      self.stepSpeedSiderealTracking = self.computeStepSpeedTracking()  # [1.e-4 steps/sec]
+      # sidereal tracking pulse speed
+      self.pulseSpeedSiderealTracking = self.computePulseSpeedTracking()  # [1.e-4 pulses/sec]
 
       # energize the motor
       ticcmd('-d', self.ticid, '--current', str(self.current))
@@ -187,42 +204,42 @@ class Motor(object):
       # microstepping
       ticcmd('-d', self.ticid, '--step-mode', str(self.microStepping))
       # set max speed, acceleration, decay mode
-      ticcmd('-d', self.ticid, '--max-speed', str(self.maxStepSpeed))
-      ticcmd('-d', self.ticid, '--max-accel', str(self.maxStepAccel))
-      ticcmd('-d', self.ticid, '--max-decel', str(self.maxStepDecel))
+      ticcmd('-d', self.ticid, '--max-speed', str(self.maxPulseSpeed))
+      ticcmd('-d', self.ticid, '--max-accel', str(self.maxPulseAccel))
+      ticcmd('-d', self.ticid, '--max-decel', str(self.maxPulseDecel))
       ticcmd('-d', self.ticid, '--decay', 'mixed50')
 
-   def computeStepSpeedTracking(self):
-      '''result in [1,e-4 steps/sec], as required by ticcmd
+   def computePulseSpeedTracking(self):
+      '''result in [1,e-4 pulses/sec], as required by ticcmd
       '''
       siderealDay = 23.9344696 * 3600.   # [sec]
-      result = self.stepsPerRotation * self.reductionFactor * self.microStepping # [steps per sidereal day]
-      result /= siderealDay  # [steps/sec]
-      result *= 1.e4 # [1.e-4 steps/sec]
+      result = self.stepsPerRotation * self.reductionFactor * self.microStepping # [pulses per sidereal day]
+      result /= siderealDay  # [pulses/sec]
+      result *= 1.e4 # [1.e-4 pulses/sec]
       return np.int(result)
 
-   def getCurrentStepPosition(self):
+   def getCurrentPulsePosition(self):
       status = yaml.load(ticcmd('-d', self.ticid, '-s', '--full'))
       position = status['Current position']
-      print("Current position is {}.".format(position))
+      print("Current "+self.name+" position is {}.".format(position))
       return position
 
    def deenergize(self):
-      print("Deenergizing motor")
+      print("Deenergizing "+self.name+" motor")
       ticcmd('-d', self.ticid, '--deenergize')
 
    def halt(self):
-      print("Halting motor")
+      print("Halting "+self.name+" motor")
       ticcmd('-d', self.ticid, '--halt-and-hold')
 
 
-   def setTargetStepPosition(self, targetPosition):
-      print("Setting target position to {}.".format(targetPosition))
+   def setTargetPulsePosition(self, targetPosition):
+      print("Setting target "+self.name+" position to {}.".format(targetPosition))
       ticcmd('-d', self.ticid, '--position', str(targetPosition))
 
-   def setTargetStepVelocity(self, targetVelocity):
-      print("Setting target velocity to {}.".format(targetVelocity))
-      ticcmd('-d', self.ticid, '--velocity', str(targetVelocity))
+   def setTargetPulseSpeed(self, targetSpeed):
+      print("Setting target "+self.name+" speed to {}.".format(targetSpeed))
+      ticcmd('-d', self.ticid, '--velocity', str(targetSpeed))
 
 
 
@@ -233,8 +250,8 @@ def run():
    # motors
    ticidRa = '00315372'
    ticidDec = '00315338'
-   motorRa = Motor(ticidRa)
-   motorDec = Motor(ticidDec)
+   motorRa = Motor(ticidRa, 'RA')
+   motorDec = Motor(ticidDec, 'Dec')
 
    # gui
    app = QtGui.QApplication(sys.argv)
