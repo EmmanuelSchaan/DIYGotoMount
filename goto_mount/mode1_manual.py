@@ -17,10 +17,10 @@ class Window(QtGui.QMainWindow):
 
    def __init__(self, motorRa, motorDec):
       super(Window, self).__init__()
-      self.setGeometry(50, 50, 500, 500)
+      self.setGeometry(0, 0, 520, 320)
       self.setWindowTitle("Goto Mount Controller")
       self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
-      self.home()
+      self.setupGui()
 
       # motors
       self.motorRa = motorRa
@@ -30,14 +30,19 @@ class Window(QtGui.QMainWindow):
       self.motorRa.setTargetPulseSpeed(self.motorRa.pulseSpeedSiderealTracking)
       self.motorDec.setTargetPulseSpeed(0)
 
-   def home(self):
+   def setupGui(self):
 
       # Quit button 
       self.btnQuit = QtGui.QPushButton("Quit", self)
-      #self.btnQuit.clicked.connect(QtCore.QCoreApplication.instance().quit)
       self.btnQuit.clicked.connect(self.quit)
       self.btnQuit.resize(100,100)
-      self.btnQuit.move(300,400)
+      self.btnQuit.move(420,200)
+
+      # Home button 
+      self.btnHome = QtGui.QPushButton("Home", self)
+      self.btnHome.clicked.connect(self.home)
+      self.btnHome.resize(100,100)
+      self.btnHome.move(420,100)
 
       # tracking toggle button
       self.btnTracking = QtGui.QPushButton("Tracking ON", self)
@@ -45,7 +50,7 @@ class Window(QtGui.QMainWindow):
       self.btnTracking.setStyleSheet("background-color : lightgreen")
       self.btnTracking.clicked.connect(self.toggleTracking)
       self.btnTracking.resize(100,100)
-      self.btnTracking.move(100,400)
+      self.btnTracking.move(420,0)
 
       # RA minus
       self.btnRaMinus = QtGui.QPushButton("RA-", self)
@@ -103,6 +108,9 @@ class Window(QtGui.QMainWindow):
       self.motorDec.deenergize()
       QtCore.QCoreApplication.instance().quit()
 
+   def home(self):
+      self.motorRa.setTargetPulsePosition(0)
+      self.motorDec.setTargetPulsePosition(0)
 
    def toggleTracking(self):
         if self.btnTracking.isChecked(): 
@@ -209,6 +217,24 @@ class Motor(object):
       ticcmd('-d', self.ticid, '--max-decel', str(self.maxPulseDecel))
       ticcmd('-d', self.ticid, '--decay', 'mixed50')
 
+   def angle(self, pulse, unit='deg'):
+      '''Convert pulse position to angular position
+      '''
+      result = pulse * 360.
+      result /= self.microstepping * self.stepsPerRotation * self.reductionFactor
+      if unit=='rad':
+         result *= np.pi / 180.
+      return result
+
+   def pulse(self, angle, unit='deg'):
+      '''Cinvert angular position to pulse position
+      '''
+      result = angle / 360.
+      result *= self.microstepping * self.stepsPerRotation * self.reductionFactor
+      if unit=='rad':
+         result /= np.pi / 180.
+      return result
+
    def computePulseSpeedTracking(self):
       '''result in [1,e-4 pulses/sec], as required by ticcmd
       '''
@@ -222,6 +248,12 @@ class Motor(object):
       status = yaml.load(ticcmd('-d', self.ticid, '-s', '--full'))
       position = status['Current position']
       print("Current "+self.name+" position is {}.".format(position))
+      return position
+
+   def getCurrentAngle(self):
+      pulse = self.getCurrentPulsePosition()
+      angle = self.angle(pulse)
+      print("Current "+self.name+" angle is {} deg.".format(round(angle,4)))
       return position
 
    def deenergize(self):
@@ -252,6 +284,10 @@ def run():
    ticidDec = '00315338'
    motorRa = Motor(ticidRa, 'RA')
    motorDec = Motor(ticidDec, 'Dec')
+
+   # test initial position
+   #print motorRa.getCurrentPulsePosition()
+   #print motorDec.getCurrentPulsePosition()
 
    # gui
    app = QtGui.QApplication(sys.argv)
