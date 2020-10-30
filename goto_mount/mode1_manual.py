@@ -48,7 +48,7 @@ class Window(QtGui.QMainWindow):
       self.btnTracking = QtGui.QPushButton("Tracking ON", self)
       self.btnTracking.setCheckable(True)
       self.btnTracking.setStyleSheet("background-color : lightgreen")
-      self.btnTracking.clicked.connect(self.toggleTracking)
+      self.btnTracking.clicked.connect(self.defaultMode)
       self.btnTracking.resize(100,100)
       self.btnTracking.move(420,0)
 
@@ -111,8 +111,9 @@ class Window(QtGui.QMainWindow):
    def home(self):
       self.motorRa.setTargetPulsePosition(0)
       self.motorDec.setTargetPulsePosition(0)
+      self.defaultMode()
 
-   def toggleTracking(self):
+   def defaultMode(self):
         if self.btnTracking.isChecked(): 
             # setting background color to light-blue 
             self.btnTracking.setStyleSheet("background-color : red") 
@@ -140,6 +141,7 @@ class Window(QtGui.QMainWindow):
          self.motorDec.setTargetPulseSpeed(self.motorDec.maxPulseSpeed)
       elif direction=='decMinus':
          self.motorDec.setTargetPulseSpeed(-self.motorDec.maxPulseSpeed)
+      self.defaultMode()
 
 
    def slewBtnReleased(self, direction):
@@ -155,6 +157,7 @@ class Window(QtGui.QMainWindow):
          self.motorDec.setTargetPulseSpeed(0)
       elif direction=='decMinus':
          self.motorDec.setTargetPulseSpeed(0)
+      self.defaultMode()
 
 
 
@@ -163,14 +166,7 @@ class Window(QtGui.QMainWindow):
       '''
       self.motorRa.halt()
       self.motorDec.halt()
-
-      if self.btnTracking.isChecked(): 
-         self.motorRa.setTargetPulseSpeed(0)
-         self.motorDec.setTargetPulseSpeed(0)
-      else:
-         # default mode: sidereal tracking
-         self.motorRa.setTargetPulseSpeed(self.motorRa.pulseSpeedSiderealTracking)
-         self.motorDec.setTargetPulseSpeed(0)
+      self.defaultMode()
 
 
 
