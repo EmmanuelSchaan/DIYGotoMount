@@ -27,8 +27,9 @@ class Window(QtGui.QMainWindow):
       self.motorDec = motorDec
 
       # default mode: sidereal tracking
-      self.motorRa.setTargetPulseSpeed(self.motorRa.pulseSpeedSiderealTracking)
-      self.motorDec.setTargetPulseSpeed(0)
+      self.defaultMode()
+      #self.motorRa.setTargetPulseSpeed(self.motorRa.pulseSpeedSiderealTracking)
+      #self.motorDec.setTargetPulseSpeed(0)
 
    def setupGui(self):
 
