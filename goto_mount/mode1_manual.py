@@ -142,7 +142,6 @@ class Window(QtGui.QMainWindow):
          self.motorDec.setTargetPulseSpeed(self.motorDec.maxPulseSpeed)
       elif direction=='decMinus':
          self.motorDec.setTargetPulseSpeed(-self.motorDec.maxPulseSpeed)
-      self.defaultMode()
 
 
    def slewBtnReleased(self, direction):
