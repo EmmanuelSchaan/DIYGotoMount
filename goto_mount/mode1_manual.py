@@ -112,7 +112,7 @@ class Window(QtGui.QMainWindow):
    def home(self):
       self.motorRa.setTargetPulsePosition(0)
       self.motorDec.setTargetPulsePosition(0)
-      self.defaultMode()
+      #self.defaultMode()
 
    def defaultMode(self):
         if self.btnTracking.isChecked(): 
