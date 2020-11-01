@@ -112,7 +112,14 @@ class Window(QtGui.QMainWindow):
    def home(self):
       self.motorRa.setTargetPulsePosition(0)
       self.motorDec.setTargetPulsePosition(0)
-      #self.defaultMode()
+#      # The problem with what's below is that it cannot be stopped
+#      # by clicking stop.
+#      # wait to reach home position
+#      while self.motorRa.getCurrentPulsePosition()<>0 or self.motorDec.getCurrentPulsePosition()<>0:
+#         pass
+#      # interrupt the tracking
+#      self.btnTracking.setChecked(True)
+#      self.defaultMode()
 
    def defaultMode(self):
         if self.btnTracking.isChecked(): 
@@ -149,14 +156,14 @@ class Window(QtGui.QMainWindow):
       '''
       #print 'button released!'
       #print direction
-      if direction=='raPlus':
-         self.motorRa.setTargetPulseSpeed(0)
-      elif direction=='raMinus':
-         self.motorRa.setTargetPulseSpeed(0)
-      elif direction=='decPlus':
-         self.motorDec.setTargetPulseSpeed(0)
-      elif direction=='decMinus':
-         self.motorDec.setTargetPulseSpeed(0)
+#      if direction=='raPlus':
+#         self.motorRa.setTargetPulseSpeed(0)
+#      elif direction=='raMinus':
+#         self.motorRa.setTargetPulseSpeed(0)
+#      elif direction=='decPlus':
+#         self.motorDec.setTargetPulseSpeed(0)
+#      elif direction=='decMinus':
+#         self.motorDec.setTargetPulseSpeed(0)
       self.defaultMode()
 
 
@@ -166,6 +173,8 @@ class Window(QtGui.QMainWindow):
       '''
       self.motorRa.halt()
       self.motorDec.halt()
+      # interrupt the tracking
+      self.btnTracking.setChecked(True)
       self.defaultMode()
 
 
