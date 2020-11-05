@@ -5,6 +5,7 @@ import yaml
 from time import sleep
 
 import sys
+import os
 from PyQt4 import QtGui, QtCore
 
 
@@ -16,6 +17,11 @@ from PyQt4 import QtGui, QtCore
 class Window(QtGui.QMainWindow):
 
    def __init__(self, motorRa, motorDec):
+      
+      # First, disable the two-finger right click daemon,
+      # it messes up with the python gui
+      os.system('killall twofing')
+
       super(Window, self).__init__()
       self.setGeometry(0, 0, 520, 320)
       self.setWindowTitle("Goto Mount Controller")
@@ -107,6 +113,10 @@ class Window(QtGui.QMainWindow):
    def quit(self):
       self.motorRa.deenergize()
       self.motorDec.deenergize()
+
+      # re-enable the two-finger right click daemon
+      os.system('twofing')
+
       QtCore.QCoreApplication.instance().quit()
 
    def home(self):
