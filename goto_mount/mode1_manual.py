@@ -212,7 +212,7 @@ class Motor(object):
       self.current = 192   # [mA]
       self.microStepping = 16 # [pulses per step]
       #self.microStepping = 32 # [pulses per step]
-      self.maxPulseSpeed = 400000000 # [1.e-4 pulses/sec]
+      self.maxPulseSpeed = 300000000 #400000000 # [1.e-4 pulses/sec]
       self.maxPulseAccel = 4000000   # [1.e-2 pulses/sec^2]
       self.maxPulseDecel = 4000000   # [1.e-2 pulses/sec^2]
 
