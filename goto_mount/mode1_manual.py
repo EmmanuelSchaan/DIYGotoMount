@@ -295,8 +295,8 @@ class Motor(object):
 
 def run():
    # motors
-   ticidRa = '00315372'
-   ticidDec = '00315338'
+   ticidRa = '00315338'
+   ticidDec = '00315372'
    motorRa = Motor(ticidRa, 'RA')
    motorDec = Motor(ticidDec, 'Dec')
 

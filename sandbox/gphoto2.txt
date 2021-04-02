@@ -1,0 +1,22 @@
+# I manage to detect the camera, but
+# I get errors when trying to capture a photo,
+# or reading from the camera
+
+# Check that gphoto2 works
+gphoto2 --version
+
+# auto-detect camera
+gphoto2 --auto-detect
+
+# take photo and save to camera's storage
+gphoto2 --capture-image
+
+# take a photo and download to raspberry pi
+gphoto2 --capture-image-and-download
+
+# 
+gphoto2 --summary
+
+# list all the files on the camera that gphoto2 can see
+gphoto2 --list-files
+
