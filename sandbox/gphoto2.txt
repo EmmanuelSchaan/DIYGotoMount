@@ -11,8 +11,20 @@ gphoto2 --auto-detect
 # take photo and save to camera's storage
 gphoto2 --capture-image
 
+# if this doesn't work, you may need to first delet these files
+sudo rm /usr/share/dbus-1/services/org.gtk.Private.GPhoto2VolumeMonitor.service
+sudo rm /usr/share/gvfs/mounts/gphoto2.mount
+sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.monitor
+sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
+# and you may need to kill the gphoto2 monitor processes
+pkill -f gphoto2
+# or first find the processes with
+#ps aux | grep gphoto
+# then kill them with 
+#kill -9 the_PID_of_the_processes_to_kill
+
 # take a photo and download to raspberry pi
-gphoto2 --capture-image-and-download
+gphoto2 --capture-image-and-download --filename pic0001.jpg
 
 # 
 gphoto2 --summary
