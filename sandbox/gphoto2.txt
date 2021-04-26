@@ -2,33 +2,50 @@
 # I get errors when trying to capture a photo,
 # or reading from the camera
 
+# List all available USB or serial ports
+gphoto2 --list-ports
+
 # Check that gphoto2 works
 gphoto2 --version
 
-# auto-detect camera
+# Auto-detect camera
 gphoto2 --auto-detect
+
+# Display info about connected camera
+gphoto2 --summary
+
+# List all files on camera
+gphoto2 --list-files
 
 # take photo and save to camera's storage
 gphoto2 --capture-image
 
-# if this doesn't work, you may need to first delet these files
-sudo rm /usr/share/dbus-1/services/org.gtk.Private.GPhoto2VolumeMonitor.service
-sudo rm /usr/share/gvfs/mounts/gphoto2.mount
-sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.monitor
-sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
-# and you may need to kill the gphoto2 monitor processes
-pkill -f gphoto2
-# or first find the processes with
-#ps aux | grep gphoto
-# then kill them with 
-#kill -9 the_PID_of_the_processes_to_kill
+## if this doesn't work, you may need to first delet these files
+#sudo rm /usr/share/dbus-1/services/org.gtk.Private.GPhoto2VolumeMonitor.service
+#sudo rm /usr/share/gvfs/mounts/gphoto2.mount
+#sudo rm /usr/share/gvfs/remote-volume-monitors/gphoto2.monitor
+#sudo rm /usr/lib/gvfs/gvfs-gphoto2-volume-monitor
+## and you may need to kill the gphoto2 monitor processes
+#pkill -f gphoto2
+## or first find the processes with
+##ps aux | grep gphoto
+## then kill them with 
+##kill -9 the_PID_of_the_processes_to_kill
 
-# take a photo and download to raspberry pi
+# Take a photo and download to raspberry pi
 gphoto2 --capture-image-and-download --filename pic0001.jpg
 
-# 
-gphoto2 --summary
+# Download ALL the files from the camera to the hard drive:
+gphoto2 --get-all-files
 
-# list all the files on the camera that gphoto2 can see
+# List all the files on the camera that gphoto2 can see
 gphoto2 --list-files
+
+# Download file number 7 to 13 from the file list from --list-files
+gphoto2 --get-file 7-13
+
+# Capture one image every 60 seconds from now to the end of times,
+# and call the script test-hook.sh after each image has been captured on drive
+gphoto2 --capture-image --interval 60 --hook-script /usr/share/doc/gphoto2/test-hook.sh
+
 
