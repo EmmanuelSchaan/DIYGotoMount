@@ -42,60 +42,60 @@ class Window(QtGui.QMainWindow):
       # Quit button 
       self.btnQuit = QtGui.QPushButton("Quit", self)
       self.btnQuit.clicked.connect(self.quit)
-      self.btnQuit.resize(100,100)
-      self.btnQuit.move(420,200)
+      self.btnQuit.resize(100,50)
+      self.btnQuit.move(0,200)
 
       # Home button 
       self.btnHome = QtGui.QPushButton("Home", self)
       self.btnHome.clicked.connect(self.home)
-      self.btnHome.resize(100,100)
-      self.btnHome.move(420,100)
+      self.btnHome.resize(100,50)
+      self.btnHome.move(0,150)
 
       # tracking toggle button
       self.btnTracking = QtGui.QPushButton("Tracking ON", self)
       self.btnTracking.setCheckable(True)
       self.btnTracking.setStyleSheet("background-color : lightgreen")
       self.btnTracking.clicked.connect(self.defaultMode)
-      self.btnTracking.resize(100,100)
-      self.btnTracking.move(420,0)
+      self.btnTracking.resize(100,50)
+      self.btnTracking.move(0,100)
 
       # RA minus
       self.btnRaMinus = QtGui.QPushButton("RA-", self)
       #self.btnRaMinus.clicked.connect(self.slewBtnPressed)
       self.btnRaMinus.pressed.connect(lambda : self.slewBtnPressed('raMinus'))
       self.btnRaMinus.released.connect(lambda : self.slewBtnReleased('raMinus'))
-      self.btnRaMinus.resize(100,100)
-      self.btnRaMinus.move(100,100)
+      self.btnRaMinus.resize(50,50)
+      self.btnRaMinus.move(100,50)
 
       # RA plus
       self.btnRaPlus = QtGui.QPushButton("RA+", self)
       #self.btnRaPlus.clicked.connect(self.increaseRa)
       self.btnRaPlus.pressed.connect(lambda : self.slewBtnPressed('raPlus'))
       self.btnRaPlus.released.connect(lambda : self.slewBtnReleased('raPlus'))
-      self.btnRaPlus.resize(100,100)
-      self.btnRaPlus.move(300,100)
+      self.btnRaPlus.resize(50,50)
+      self.btnRaPlus.move(200,50)
 
       # Dec minus
       self.btnDecMinus = QtGui.QPushButton("Dec-", self)
       #self.btnDecMinus.clicked.connect(self.decreaseDec)
       self.btnDecMinus.pressed.connect(lambda : self.slewBtnPressed('decMinus'))
       self.btnDecMinus.released.connect(lambda : self.slewBtnReleased('decMinus'))
-      self.btnDecMinus.resize(100,100)
-      self.btnDecMinus.move(200,200)
+      self.btnDecMinus.resize(50,50)
+      self.btnDecMinus.move(150,100)
 
       # Dec plus
       self.btnDecPlus = QtGui.QPushButton("Dec+", self)
       #self.btnDecPlus.clicked.connect(self.increaseDec)
       self.btnDecPlus.pressed.connect(lambda : self.slewBtnPressed('decPlus'))
       self.btnDecPlus.released.connect(lambda : self.slewBtnReleased('decPlus'))
-      self.btnDecPlus.resize(100,100)
-      self.btnDecPlus.move(200,0)
+      self.btnDecPlus.resize(50,50)
+      self.btnDecPlus.move(150,0)
 
       # Stop
       self.btnStop = QtGui.QPushButton("Stop", self)
       self.btnStop.clicked.connect(self.stop)
-      self.btnStop.resize(100,100)
-      self.btnStop.move(200,100)
+      self.btnStop.resize(50,50)
+      self.btnStop.move(150,50)
 
       # Current RA
       self.txtRa = QtGui.QLineEdit("RA", self)

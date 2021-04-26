@@ -1,6 +1,5 @@
-# I manage to detect the camera, but
-# I get errors when trying to capture a photo,
-# or reading from the camera
+# List of all arguments for gphoto2:
+# http://www.gphoto.org/doc/manual/ref-gphoto2-cli.html
 
 # List all available USB or serial ports
 gphoto2 --list-ports
