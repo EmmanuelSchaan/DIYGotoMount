@@ -218,8 +218,10 @@ class Window(QtGui.QMainWindow):
       '''Capture test photo and save it to raspberry pi
       to review it
       '''
-      #os.system('gphoto2 --capture-image-and-download --folder '+self.pathTestShots)
+      # Take a photo and save it to the Pi
       os.system('gphoto2 --capture-image-and-download --force-overwrite --filename '+self.pathTestShots+'test.jpg')
+      # Show the image, so it can be reviewed
+      os.system('feh --scale-down --image-bg "black" '+self.pathTestShots+'test.jpg')
 
 
    def cameraStartStop(self):
