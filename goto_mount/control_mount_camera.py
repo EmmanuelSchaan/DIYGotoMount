@@ -23,7 +23,7 @@ class Window(QtGui.QMainWindow):
       os.system('killall twofing')
 
       super(Window, self).__init__()
-      self.setGeometry(0, 0, 520, 320)
+      self.setGeometry(0, 66, 520, 320)
       self.setWindowTitle("Goto Mount Controller")
       self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
       self.setupGui()
@@ -127,7 +127,14 @@ class Window(QtGui.QMainWindow):
       self.btnCameraStartStop.clicked.connect(self.cameraStartStop)
       self.btnCameraStartStop.resize(100,50)
       self.btnCameraStartStop.move(250,150)
-
+      
+      # Interval for timelapse in sec
+      self.spbxInterval = QtGui.QSpinBox(self)
+      #self.spbxInterval.setMinimum(0)
+      #self.spbxInterval.setMaximum(10000)
+      #self.spbxInterval.valueChanged.connect(self.interval)
+      self.spbxInterval.resize(100,50)
+      self.spbxInterval.move(250,100)
 
       self.update()
       self.show()
@@ -232,8 +239,18 @@ class Window(QtGui.QMainWindow):
          self.btnCameraStartStop.setStyleSheet("background-color : red") 
          self.btnCameraStartStop.setText("Stop")
 
+         # read the timelapse interval in sec
+         interval = self.spbxInterval.value()
+         print("Starting timelapse: interval = "+str(interval)+" sec")
          # Start the timelapse
-         self.subprocTimelapse = subprocess.Popen(['gphoto2', '--capture-image', '--interval', '5'])
+#         self.subprocTimelapse = subprocess.Popen(['gphoto2', 
+#                                                   '--capture-image', 
+#                                                   '--interval', 
+#                                                   '5'])
+         self.subprocTimelapse = subprocess.Popen(['gphoto2', 
+                                                   '--capture-image', 
+                                                   '--interval', 
+                                                   str(interval)])
 
       else: 
          self.btnCameraStartStop.setStyleSheet("background-color : lightgreen")
@@ -241,8 +258,11 @@ class Window(QtGui.QMainWindow):
 
          # kill the timelapse, if it was started
          if hasattr(self,'subprocTimelapse'):
+            print("Stopping timelapse")
             self.subprocTimelapse.kill()
 
+   def interval(self):
+      pass
 
 ##############################################33
 # Motor control
