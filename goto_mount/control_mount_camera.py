@@ -11,6 +11,81 @@ from PyQt4 import QtGui, QtCore
 
 
 ##############################################33
+# Camera settings: Canon EOS 550D (=T2i)
+
+dictIso = {
+   0: 'Auto',
+   1: '100',
+   2: '200',
+   3: '400',
+   4: '800',
+   5: '1600',
+   6: '3200',
+   7: '6400',
+   }
+
+dictExposure = {
+   0: 'bulb',
+   1: '30',
+   2: '25',
+   3: '20',
+   4: '15',
+   5: '13',
+   6: '10',
+   7: '8',
+   8: '6',
+   9: '5',
+   10: '4',
+   11: '3.2',
+   12: '2.5',
+   13: '2',
+   14: '1.6',
+   15: '1.3',
+   16: '1',
+   17: '0.8',
+   18: '0.6',
+   19: '0.5',
+   20: '0.4',
+   21: '0.3',
+   22: '1/4',
+   23: '1/5',
+   24: '1/6',
+   25: '1/8',
+   26: '1/10',
+   27: '1/13',
+   28: '1/15',
+   29: '1/20',
+   30: '1/25',
+   31: '1/30',
+   32: '1/40',
+   33: '1/50',
+   34: '1/60',
+   35: '1/80',
+   36: '1/100',
+   37: '1/125',
+   38: '1/160',
+   39: '1/200',
+   40: '1/250',
+   41: '1/320',
+   42: '1/400',
+   43: '1/500',
+   44: '1/640',
+   45: '1/800',
+   46: '1/1000',
+   47: '1/1250',
+   48: '1/1600',
+   49: '1/2000',
+   50: '1/2500',
+   51: '1/3200',
+   52: '1/4000',
+}
+
+
+
+
+
+
+##############################################33
 # GUI
 
 
@@ -23,7 +98,7 @@ class Window(QtGui.QMainWindow):
       os.system('killall twofing')
 
       super(Window, self).__init__()
-      self.setGeometry(0, 66, 520, 320)
+      self.setGeometry(0, 66, 520, 400)
       self.setWindowTitle("Goto Mount Controller")
       self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
       self.setupGui()
@@ -66,7 +141,7 @@ class Window(QtGui.QMainWindow):
       self.btnRaMinus.pressed.connect(lambda : self.slewBtnPressed('raMinus'))
       self.btnRaMinus.released.connect(lambda : self.slewBtnReleased('raMinus'))
       self.btnRaMinus.resize(50,50)
-      self.btnRaMinus.move(100,50)
+      self.btnRaMinus.move(125,50)
 
       # RA plus
       self.btnRaPlus = QtGui.QPushButton("RA+", self)
@@ -74,7 +149,7 @@ class Window(QtGui.QMainWindow):
       self.btnRaPlus.pressed.connect(lambda : self.slewBtnPressed('raPlus'))
       self.btnRaPlus.released.connect(lambda : self.slewBtnReleased('raPlus'))
       self.btnRaPlus.resize(50,50)
-      self.btnRaPlus.move(200,50)
+      self.btnRaPlus.move(225,50)
 
       # Dec minus
       self.btnDecMinus = QtGui.QPushButton("Dec-", self)
@@ -82,7 +157,7 @@ class Window(QtGui.QMainWindow):
       self.btnDecMinus.pressed.connect(lambda : self.slewBtnPressed('decMinus'))
       self.btnDecMinus.released.connect(lambda : self.slewBtnReleased('decMinus'))
       self.btnDecMinus.resize(50,50)
-      self.btnDecMinus.move(150,100)
+      self.btnDecMinus.move(175,100)
 
       # Dec plus
       self.btnDecPlus = QtGui.QPushButton("Dec+", self)
@@ -90,13 +165,13 @@ class Window(QtGui.QMainWindow):
       self.btnDecPlus.pressed.connect(lambda : self.slewBtnPressed('decPlus'))
       self.btnDecPlus.released.connect(lambda : self.slewBtnReleased('decPlus'))
       self.btnDecPlus.resize(50,50)
-      self.btnDecPlus.move(150,0)
+      self.btnDecPlus.move(175,0)
 
       # Stop
       self.btnStop = QtGui.QPushButton("Stop", self)
       self.btnStop.clicked.connect(self.stop)
       self.btnStop.resize(50,50)
-      self.btnStop.move(150,50)
+      self.btnStop.move(175,50)
 
       # Current RA
       self.txtRa = QtGui.QLineEdit("RA", self)
@@ -112,13 +187,13 @@ class Window(QtGui.QMainWindow):
       self.btnShutter = QtGui.QPushButton("Shutter", self)
       self.btnShutter.clicked.connect(self.shutter)
       self.btnShutter.resize(100,50)
-      self.btnShutter.move(250,0)
+      self.btnShutter.move(300,0)
 
       # Test shot
       self.btnTestShot = QtGui.QPushButton("Test shot", self)
       self.btnTestShot.clicked.connect(self.testShot)
       self.btnTestShot.resize(100,50)
-      self.btnTestShot.move(250,50)
+      self.btnTestShot.move(300,50)
 
       # Camera start/stop
       self.btnCameraStartStop = QtGui.QPushButton("Start", self)
@@ -126,18 +201,60 @@ class Window(QtGui.QMainWindow):
       self.btnCameraStartStop.setStyleSheet("background-color : lightgreen")
       self.btnCameraStartStop.clicked.connect(self.cameraStartStop)
       self.btnCameraStartStop.resize(100,50)
-      self.btnCameraStartStop.move(250,150)
+      self.btnCameraStartStop.move(300,300)
       
+      # ISO
+      self.cbbxIso = QtGui.QComboBox(self)
+      for i in range(len(dictIso.keys())):
+         self.cbbxIso.addItem(dictIso[i])
+      #self.cbbxExposure.currentIndexChanged.connect(self.iso)
+      self.cbbxIso.resize(100,50)
+      self.cbbxIso.move(300,100)
+      # label
+      self.labelIso = QtGui.QLabel("ISO", self)
+      self.labelIso.resize(50,50)
+      self.labelIso.move(250,100)
+
+
+      # Exposure in sec
+      self.cbbxExposure = QtGui.QComboBox(self)
+      for i in range(len(dictExposure.keys())):
+         self.cbbxExposure.addItem(dictExposure[i])
+      #self.cbbxExposure.currentIndexChanged.connect(self.exposure)
+      self.cbbxExposure.resize(100,50)
+      self.cbbxExposure.move(300,150)
+      # label
+      self.labelExposure = QtGui.QLabel("Exp (s)", self)
+      self.labelExposure.resize(50,50)
+      self.labelExposure.move(250,150)
+
+      # Long exposure in sec, if bulb mode 
+      self.spbxBulbExposure = QtGui.QSpinBox(self)
+      self.spbxBulbExposure.setRange(30, 3600)
+      self.spbxBulbExposure.setSingleStep(10)
+      self.spbxBulbExposure.resize(65,50)
+      self.spbxBulbExposure.move(335,200)
+      # label
+      self.labelInterval = QtGui.QLabel("Bulb Exp (s)", self)
+      self.labelInterval.resize(85,50)
+      self.labelInterval.move(250,200)
+
+
       # Interval for timelapse in sec
       self.spbxInterval = QtGui.QSpinBox(self)
       #self.spbxInterval.setMinimum(0)
       #self.spbxInterval.setMaximum(10000)
       #self.spbxInterval.valueChanged.connect(self.interval)
       self.spbxInterval.resize(100,50)
-      self.spbxInterval.move(250,100)
+      self.spbxInterval.move(300,250)
+      # label
+      self.labelInterval = QtGui.QLabel("Int (s)", self)
+      self.labelInterval.resize(50,50)
+      self.labelInterval.move(250,250)
 
       self.update()
       self.show()
+
 
    def quit(self):
       self.motorRa.deenergize()

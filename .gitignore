@@ -4,4 +4,4 @@
 
 *.pyc
 
-/gotomount/output/
+./gotomount/output/
