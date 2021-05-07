@@ -231,9 +231,17 @@ class Window(QtGui.QMainWindow):
       if self.btnCameraStartStop.isChecked(): 
          self.btnCameraStartStop.setStyleSheet("background-color : red") 
          self.btnCameraStartStop.setText("Stop")
+
+         # Start the timelapse
+         self.subprocTimelapse = subprocess.Popen(['gphoto2', '--capture-image', '--interval', '5'])
+
       else: 
          self.btnCameraStartStop.setStyleSheet("background-color : lightgreen")
          self.btnCameraStartStop.setText("Start")
+
+         # kill the timelapse, if it was started
+         if hasattr(self,'subprocTimelapse'):
+            self.subprocTimelapse.kill()
 
 
 ##############################################33

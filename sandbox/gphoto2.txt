@@ -43,8 +43,8 @@ gphoto2 --list-files
 # Download file number 7 to 13 from the file list from --list-files
 gphoto2 --get-file 7-13
 
-# Capture one image every 60 seconds from now to the end of times,
+# Capture one image every 5 seconds from now to the end of times,
 # and call the script test-hook.sh after each image has been captured on drive
-gphoto2 --capture-image --interval 60 --hook-script /usr/share/doc/gphoto2/test-hook.sh
+gphoto2 --capture-image --interval 5 --hook-script /usr/share/doc/gphoto2/test-hook.sh
 
 
