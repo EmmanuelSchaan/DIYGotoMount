@@ -112,6 +112,9 @@ class Window(QtGui.QMainWindow):
 
       # default mode: sidereal tracking
       self.defaultMode()
+      # set ISO and shutter speed
+      self.iso()
+      self.exposure()
 
    def setupGui(self):
 
@@ -207,7 +210,7 @@ class Window(QtGui.QMainWindow):
       self.cbbxIso = QtGui.QComboBox(self)
       for i in range(len(dictIso.keys())):
          self.cbbxIso.addItem(dictIso[i])
-      #self.cbbxExposure.currentIndexChanged.connect(self.iso)
+      self.cbbxIso.currentIndexChanged.connect(self.iso)
       self.cbbxIso.resize(100,50)
       self.cbbxIso.move(300,100)
       # label
@@ -220,7 +223,7 @@ class Window(QtGui.QMainWindow):
       self.cbbxExposure = QtGui.QComboBox(self)
       for i in range(len(dictExposure.keys())):
          self.cbbxExposure.addItem(dictExposure[i])
-      #self.cbbxExposure.currentIndexChanged.connect(self.exposure)
+      self.cbbxExposure.currentIndexChanged.connect(self.exposure)
       self.cbbxExposure.resize(100,50)
       self.cbbxExposure.move(300,150)
       # label
@@ -336,14 +339,36 @@ class Window(QtGui.QMainWindow):
       '''Captures a photo, saves it to camera
       '''
       os.system('gphoto2 --capture-image')
+      # if not in bulb mode
+      if self.cbbxExposure.currentIndex()<>0:
+         # Take a photo
+         os.system('gphoto2 --capture-image')
+      # else in bulb mode
+      else:
+         print("hihi")
+         # read the long exposure time
+         exposure = self.spbxBulbExposure.value()
+         # Hold the shutter down for the requested amount of time
+         os.system("gphoto2 --set-config /main/actions/eosremoterelease=2 --wait-event="+str(exposure)+"s")
 
 
    def testShot(self):
       '''Capture test photo and save it to raspberry pi
       to review it
       '''
-      # Take a photo and save it to the Pi
-      os.system('gphoto2 --capture-image-and-download --force-overwrite --filename '+self.pathTestShots+'test.jpg')
+      # if not in bulb mode
+      if self.cbbxExposure.currentIndex()<>0:
+         # Take a photo and save it to the Pi
+         os.system('gphoto2 --capture-image-and-download --force-overwrite --filename '+self.pathTestShots+'test.jpg')
+      # else in bulb mode
+      else:
+         print("hihi")
+         # read the long exposure time
+         exposure = self.spbxBulbExposure.value()
+         # Hold the shutter down for the requested amount of time
+         os.system("gphoto2 --set-config /main/actions/eosremoterelease=2 --wait-event="+str(exposure)+"s")
+         # Once the exposure is written on camera, download to Pi
+         os.system("gphoto2 --wait-event-and-download=FILEADDED --force-overwrite --filename "+self.pathTestShots+"test.jpg")
       # Show the image, so it can be reviewed
       os.system('feh --scale-down --image-bg "black" '+self.pathTestShots+'test.jpg')
 
@@ -360,23 +385,52 @@ class Window(QtGui.QMainWindow):
          interval = self.spbxInterval.value()
          print("Starting timelapse: interval = "+str(interval)+" sec")
          # Start the timelapse
-#         self.subprocTimelapse = subprocess.Popen(['gphoto2', 
-#                                                   '--capture-image', 
-#                                                   '--interval', 
-#                                                   '5'])
-         self.subprocTimelapse = subprocess.Popen(['gphoto2', 
-                                                   '--capture-image', 
-                                                   '--interval', 
-                                                   str(interval)])
+
+         # if not in bulb mode
+         if self.cbbxExposure.currentIndex()<>0:
+            # use timelapse function of gphoto2
+            self.subprocTimelapse = subprocess.Popen('gphoto2 --capture-image --interval '+str(interval), shell=True)
+
+         # else in bulb mode
+         else:
+            # read the long exposure time
+            exposure = self.spbxBulbExposure.value()
+            # do a manual loop for the timelapse
+            self.subprocTimelapse = subprocess.Popen("""while :
+                  do
+                  gphoto2 --set-config /main/actions/eosremoterelease=2 --wait-event="""+str(exposure)+"""s
+                  sleep """+str(max(0, interval-exposure))+"""
+                  done""", shell=True)
 
       else: 
          self.btnCameraStartStop.setStyleSheet("background-color : lightgreen")
          self.btnCameraStartStop.setText("Start")
-
          # kill the timelapse, if it was started
+         print("Stopping timelapse")
+         # kill the exposure if it's in progress
+         os.system('killall gphoto2')
+         # stop the manual loop, if in bulb mode, so we don't start another exposure
          if hasattr(self,'subprocTimelapse'):
-            print("Stopping timelapse")
             self.subprocTimelapse.kill()
+
+
+   def iso(self):
+      '''Set the ISO on the camera
+      '''
+      isoIndex = self.cbbxIso.currentIndex()
+      print("Setting ISO to "+dictIso[isoIndex]+" (choice "+str(isoIndex)+")")
+#      os.system('gphoto2 --set-config /main/imgsettings/iso='+str(isoIndex))
+      subprocess.Popen('gphoto2 --set-config /main/imgsettings/iso='+str(isoIndex), shell=True)
+
+
+   def exposure(self):
+      '''Set the Shutter speed on the camera
+      '''
+      exposureIndex = self.cbbxExposure.currentIndex()
+      print("Setting Shutter to "+dictExposure[exposureIndex]+" (choice "+str(exposureIndex)+")")
+#      os.system('gphoto2 --set-config /main/capturesettings/shutterspeed='+str(exposureIndex))
+      subprocess.Popen('gphoto2 --set-config /main/capturesettings/shutterspeed='+str(exposureIndex), shell=True)
+
 
    def interval(self):
       pass
